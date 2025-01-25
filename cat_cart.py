@@ -4,7 +4,7 @@ import sqlite3
 app = Flask(__name__)
 
 def init_db():
-    conn = sqlite3.connect('C:\\Users\\nikul\\PycharmProjects\\online_flower_shop\\flower_shop.db')
+    conn = sqlite3.connect('C:\\flower_shop.db')
     cursor = conn.cursor()
     cursor.execute(
         "CREATE TABLE IF NOT EXISTS cart (id INTEGER PRIMARY KEY, user_id INTEGER, bouquet_id INTEGER, quantity INTEGER, FOREIGN KEY(user_id) REFERENCES registration(id), FOREIGN KEY (bouquet_id) REFERENCES bouquets(id))")
@@ -16,7 +16,7 @@ def init_db():
 @app.route('/catalog', methods=['GET'])
 def get_catalog():
     try:
-        with sqlite3.connect('C:\\Users\\nikul\\PycharmProjects\\online_flower_shop\\flower_shop.db') as conn:
+        with sqlite3.connect('C:\\flower_shop.db') as conn:
             cursor = conn.cursor()
             cursor.execute("SELECT id, name, price FROM bouquets")
             rows = cursor.fetchall()
@@ -37,7 +37,7 @@ def add_to_cart():
 
     try:
         # Подключение к базе данных
-        conn = sqlite3.connect('C:\\Users\\nikul\\PycharmProjects\\online_flower_shop\\flower_shop.db')
+        conn = sqlite3.connect('C:\\flower_shop.db')
         cursor = conn.cursor()
 
         # Проверяем, есть ли уже такой товар в корзине пользователя
@@ -64,7 +64,7 @@ def add_to_cart():
 
 @app.route('/cart/<int:user_id>', methods=['GET'])
 def get_cart(user_id):
-    conn = sqlite3.connect('C:\\Users\\nikul\\PycharmProjects\\online_flower_shop\\flower_shop.db')
+    conn = sqlite3.connect('C:\\flower_shop.db')
     cursor = conn.cursor()
     cursor.execute(
         "SELECT bouquets.name, bouquets.price, cart.quantity FROM bouquets JOIN cart ON cart.bouquet_id = bouquets.id WHERE cart.user_id=?",
@@ -78,7 +78,7 @@ def get_cart(user_id):
 @app.route('/cart/<int:id>', methods=['DELETE'])
 def delete_bouquet_from_cart(id):
     try:
-        conn = sqlite3.connect('C:\\Users\\nikul\\PycharmProjects\\online_flower_shop\\flower_shop.db')
+        conn = sqlite3.connect('C:\\flower_shop.db')
         cursor = conn.cursor()
         cursor.execute("DELETE FROM cart WHERE rowid IN (SELECT rowid FROM cart LIMIT 1 OFFSET ?)", (id,))
         if cursor.rowcount == 0:
