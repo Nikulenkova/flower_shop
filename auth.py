@@ -3,7 +3,7 @@ import sqlite3
 
 app = Flask(__name__)
 def init_db():
-    conn = sqlite3.connect('C:\\Users\\nikul\\PycharmProjects\\online_flower_shop\\flower_shop.db')
+    conn = sqlite3.connect('C:\\flower_shop.db')
     cursor = conn.cursor()
     cursor.execute(
         "CREATE TABLE IF NOT EXISTS registration (id INTEGER PRIMARY KEY, login TEXT NOT NULL, password TEXT NOT NULL)")
@@ -15,7 +15,7 @@ def register():
     data = request.json
     login = data['login']
     password = data['password']
-    conn = sqlite3.connect('C:\\Users\\nikul\\PycharmProjects\\online_flower_shop\\flower_shop.db')
+    conn = sqlite3.connect('C:\\flower_shop.db')
     cursor = conn.cursor()
     cursor.execute("INSERT INTO registration (login, password) VALUES (?, ?)", (login, password))
     conn.commit()
@@ -28,7 +28,7 @@ def login():
     data = request.json
     login = data['login']
     password = data['password']
-    conn = sqlite3.connect('C:\\Users\\nikul\\PycharmProjects\\online_flower_shop\\flower_shop.db')
+    conn = sqlite3.connect('C:\\flower_shop.db')
     cursor = conn.cursor()
     cursor.execute("SELECT * FROM registration WHERE login=? AND password=?", (login, password))
     user = cursor.fetchone()
